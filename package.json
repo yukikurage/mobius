@@ -1,0 +1,29 @@
+{
+  "name": "mobius",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -r output .lock .cache",
+    "test": "npx spago test",
+    "build:spago": "npx spago build",
+    "deploy:spago": "npx spago bundle-app --main Main --to './public/index.js'",
+    "deploy:tailwind": "npx tailwindcss -i ./src/tailwind.css -o ./public/style.css",
+    "watch:tailwind": "npx tailwindcss -i ./src/tailwind.css -o ./public/style.css -w",
+    "watch:spago": "npx spago build --watch",
+    "watch:webpack-server": "npx webpack-dev-server",
+    "watch": "npx concurrently \"npm run watch:tailwind\" \"npm run watch:webpack-server\"",
+    "deploy": "npm run deploy:tailwind && npm run deploy:spago"
+  },
+  "author": "yukikurage",
+  "license": "ISC",
+  "devDependencies": {
+    "purescript": "^0.14.5",
+    "spago": "^0.20.3",
+    "tailwindcss": "^2.2.16",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0",
+    "webpack-dev-server": "^4.3.1",
+    "@tailwindcss/jit": "0.1.10"
+  }
+}
