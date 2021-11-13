@@ -20,6 +20,7 @@
   "devDependencies": {
     "@tailwindcss/jit": "0.1.10",
     "purescript": "^0.14.5",
+    "purs-tidy": "^0.6.2",
     "spago": "^0.20.3",
     "tailwindcss": "^2.2.16",
     "webpack": "^5.58.1",
