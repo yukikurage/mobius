@@ -7,13 +7,19 @@ data Object
   | Apple
   | Box
 
-data ObjectProperties = Push | Stop
+data ObjectProperty = Push | Stop
 
 derive instance Eq Object
-derive instance Eq ObjectProperties
+derive instance Eq ObjectProperty
 
-canPush :: Object -> ObjectProperties
-canPush = case _ of
+instance Show Object where
+  show = case _ of
+    Wall -> "⬛"
+    Apple -> "🍏"
+    Box -> "⬜"
+
+objectProperty :: Object -> ObjectProperty
+objectProperty = case _ of
   Wall -> Stop
   Apple -> Push
   Box -> Push
