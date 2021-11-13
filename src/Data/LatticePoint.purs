@@ -1,7 +1,6 @@
 module Data.LatticePoint where
 
+import Data.Directions (Directions)
+
 class LatticePoint p where
-  up :: p -> p
-  right :: p -> p
-  down :: p -> p
-  left :: p -> p
+  move :: Directions -> p -> p
