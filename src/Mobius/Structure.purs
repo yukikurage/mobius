@@ -1,7 +1,8 @@
 module Mobius.Structure where
 
+data Bridge = Bridge Int Int
+
 data Structure = Structure
-  { isSwitch :: Int -> Int -> Boolean
+  { isBridge :: Int -> Int -> Boolean
   , isSingularPoint :: Int -> Int -> Boolean
-  , isOutSide :: Int -> Int -> Boolean
   }
