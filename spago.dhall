@@ -17,6 +17,8 @@ to generate this file without the comments in this block.
   , "debug"
   , "effect"
   , "foldable-traversable"
+  , "halogen"
+  , "halogen-hooks"
   , "integers"
   , "matrices"
   , "maybe"
