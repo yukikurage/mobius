@@ -2,13 +2,13 @@ module Mobius.Map2D where
 
 import Prelude
 
-import Common (upRange)
+import Common (get, modify, set, upRange)
 import Data.Array (filter, length)
 import Data.Int (odd)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested ((/\))
-import Matrix (Matrix, get, height, modify, set, width)
+import Matrix (Matrix, height, width)
 import Mobius.Directions (Directions(..))
 import Mobius.LatticePoint (LatticePoint(..))
 import Mobius.Surface (Surface(..), changeSurface)
