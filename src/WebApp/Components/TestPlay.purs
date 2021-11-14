@@ -3,12 +3,9 @@ module WebApp.Components.TestPlay (component) where
 import Prelude hiding (div)
 
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Maybe (Maybe, fromMaybe)
 import Data.Tuple.Nested ((/\))
-import Debug (spy)
 import Effect.Class (class MonadEffect)
-import Effect.Class.Console (logShow)
-import Halogen (Component, lift)
+import Halogen (Component)
 import Halogen.HTML (button)
 import Halogen.HTML.Events (onKeyDown)
 import Halogen.Hooks as Hooks
@@ -56,16 +53,16 @@ w = Object Wall
 testFrontMap :: Matrix (Cell Object)
 testFrontMap = fromMaybe empty $ fromArray
   [ [ e, e, e, e, e ]
+  , [ e, e, e, b, w ]
   , [ e, e, e, e, e ]
-  , [ e, e, e, e, e ]
-  , [ e, a, e, e, e ]
+  , [ e, a, e, w, e ]
   , [ e, e, e, e, e ]
   ]
 
 testBackMap :: Matrix (Cell Object)
 testBackMap = fromMaybe empty $ fromArray
-  [ [ e, e, e, e, e ]
-  , [ e, e, e, e, e ]
+  [ [ e, w, e, e, e ]
+  , [ b, b, e, e, e ]
   , [ e, e, e, e, e ]
   , [ e, e, e, e, e ]
   , [ e, e, e, e, e ]
