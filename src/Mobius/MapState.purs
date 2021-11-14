@@ -15,7 +15,7 @@ data MapState = MapState
   }
 
 instance Show MapState where
-  show (MapState { map2D, character, destinations }) = "MapState{"
+  show (MapState { map2D, character, destinations }) = "MapState{\n"
     <> show map2D
     <> ",\ncharacter:"
     <> show character
