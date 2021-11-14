@@ -36,7 +36,6 @@ component = Hooks.component \_ _ -> Hooks.do
           "a" -> Just Left
           _ -> Nothing
         newMapState = fromMaybe mapState $ move mapState <$> dir
-      lift $ spy "X" $ logShow newMapState
       Hooks.put mapStateId newMapState
       pure unit
 
