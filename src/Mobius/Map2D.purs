@@ -10,7 +10,7 @@ import Data.Tuple (Tuple(..), fst, snd)
 import Matrix (Matrix, get, height, width)
 import Mobius.Directions (Directions(..))
 import Mobius.LatticePoint (LatticePoint(..))
-import Mobius.Surface (Surface(..))
+import Mobius.Surface (Surface(..), changeSurface)
 
 data Cell a = Empty | Object a
 
@@ -50,6 +50,7 @@ index (Map2D m) (LatticePoint s i j) = map (map f) $ get i j m
 -- | それ以外の場合は計算可能である
 compute :: forall a. Eq a => Map2D a -> LatticePoint -> Directions -> Maybe LatticePoint
 compute m p _ | index m p == Just SingularPoint = Nothing
+compute _ (LatticePoint s i j) Change = Just $ LatticePoint (changeSurface s) i j
 compute m (LatticePoint s i j) d = Just $ LatticePoint newS newI newJ
   where
   isCrossBridge = case d of
@@ -65,8 +66,6 @@ compute m (LatticePoint s i j) d = Just $ LatticePoint newS newI newJ
     Right -> j + 1
     Left -> j - 1
     _ -> j
-  changeSurface Front = Back
-  changeSurface Back = Front
 
 inRange :: forall a. Map2D a -> LatticePoint -> Boolean
 inRange (Map2D m) (LatticePoint _ i j) = 0 <= i && i < height m && 0 <= j && j < width m
