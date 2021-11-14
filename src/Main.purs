@@ -1,4 +1,4 @@
-module Test.Main where
+module Main where
 
 import Prelude
 
@@ -8,7 +8,7 @@ import Effect.Aff (launchAff_)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Web.DOM.ParentNode (QuerySelector(..))
-import WebApp.Body as Body
+import WebApp.Components.Body as Body
 
 main :: Effect Unit
 main =
