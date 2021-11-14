@@ -1,12 +1,12 @@
-module Mobius.MapState where
+module Mobius.Game.MapState where
 
 import Prelude
 
 import Data.Maybe (Maybe(..))
-import Mobius.Directions (Directions)
-import Mobius.LatticePoint (LatticePoint)
-import Mobius.Map2D (Cell(..), Map2D, WithSingularPoint(..), compute, index, updateAt)
-import Mobius.Object (Object, ObjectProperty(..), objectProperty)
+import Mobius.Game.Directions (Directions)
+import Mobius.Game.LatticePoint (LatticePoint)
+import Mobius.Game.Map2D (Cell(..), Map2D, WithSingularPoint(..), compute, index, updateAt)
+import Mobius.Game.Object (Object, ObjectProperty(..), objectProperty)
 
 data MapState = MapState
   { map2D :: Map2D (Cell Object)

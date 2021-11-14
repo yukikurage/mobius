@@ -1,4 +1,4 @@
-module Mobius.Surface where
+module Mobius.Game.Surface where
 
 import Prelude
 

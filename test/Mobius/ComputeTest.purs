@@ -9,12 +9,12 @@ import Effect (Effect)
 import Effect.Console (logShow)
 import Effect.Ref (new, read, write)
 import Matrix (Matrix, empty, fromArray, set, zipWith)
-import Mobius.Directions (Directions(..))
-import Mobius.LatticePoint (LatticePoint(..))
-import Mobius.Map2D (Cell(..), Map2D(..), WithSingularPoint(..), compute)
-import Mobius.MapState (MapState(..), move)
-import Mobius.Object (Object(..))
-import Mobius.Surface (Surface(..))
+import Mobius.Game.Directions (Directions(..))
+import Mobius.Game.LatticePoint (LatticePoint(..))
+import Mobius.Game.Map2D (Cell(..), Map2D(..), WithSingularPoint(..), compute)
+import Mobius.Game.MapState (MapState(..), move)
+import Mobius.Game.Object (Object(..))
+import Mobius.Game.Surface (Surface(..))
 
 e :: forall t3. Cell t3
 e = Empty

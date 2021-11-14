@@ -1,4 +1,4 @@
-module Mobius.Directions where
+module Mobius.Game.Directions where
 
 import Prelude
 

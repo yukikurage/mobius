@@ -1,8 +1,8 @@
-module Mobius.LatticePoint where
+module Mobius.Game.LatticePoint where
 
 import Prelude
 
-import Mobius.Surface (Surface)
+import Mobius.Game.Surface (Surface)
 
 data LatticePoint = LatticePoint Surface Int Int -- | layer, posX, posY
 

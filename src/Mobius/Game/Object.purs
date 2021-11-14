@@ -1,4 +1,4 @@
-module Mobius.Object where
+module Mobius.Game.Object where
 
 import Prelude
 

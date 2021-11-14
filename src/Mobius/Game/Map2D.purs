@@ -1,4 +1,4 @@
-module Mobius.Map2D where
+module Mobius.Game.Map2D where
 
 import Prelude
 
@@ -10,9 +10,9 @@ import Data.String as String
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested ((/\))
 import Matrix (Matrix, height, width)
-import Mobius.Directions (Directions(..))
-import Mobius.LatticePoint (LatticePoint(..))
-import Mobius.Surface (Surface(..), changeSurface)
+import Mobius.Game.Directions (Directions(..))
+import Mobius.Game.LatticePoint (LatticePoint(..))
+import Mobius.Game.Surface (Surface(..), changeSurface)
 
 data Cell a = Empty | Object a
 
