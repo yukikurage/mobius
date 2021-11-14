@@ -9,15 +9,11 @@ import Halogen (Component)
 import Halogen.HTML (button)
 import Halogen.HTML.Events (onKeyDown)
 import Halogen.Hooks as Hooks
-import Matrix (Matrix, empty, fromArray, set, zipWith)
+import Mobius.Contents.Maps (testMapState)
 import Mobius.Game.Directions (Directions(..))
-import Mobius.Game.LatticePoint (LatticePoint(..))
-import Mobius.Game.Map2D (Cell(..), Map2D(..), WithSingularPoint(..))
-import Mobius.Game.MapState (MapState(..), move)
-import Mobius.Game.Object (Object(..))
-import Mobius.Game.Surface (Surface(..))
-import Web.UIEvent.KeyboardEvent (key)
+import Mobius.Game.MapState (move)
 import Mobius.WebApp.Components.Common (css, makeText)
+import Web.UIEvent.KeyboardEvent (key)
 
 component :: forall q i o m. Monad m => MonadEffect m => Component q i o m
 component = Hooks.component \_ _ -> Hooks.do
@@ -37,47 +33,3 @@ component = Hooks.component \_ _ -> Hooks.do
       pure unit
 
   Hooks.pure $ button [ css "h-screen w-screen m-9", onKeyDown keyDownHandler ] $ makeText $ show mapState
-
-e :: forall t3. Cell t3
-e = Empty
-
-a :: Cell Object
-a = Object Apple
-
-b :: Cell Object
-b = Object Box
-
-w :: Cell Object
-w = Object Wall
-
-testFrontMap :: Matrix (Cell Object)
-testFrontMap = fromMaybe empty $ fromArray
-  [ [ e, e, e, e, e ]
-  , [ e, e, e, b, w ]
-  , [ e, e, e, e, e ]
-  , [ e, a, e, e, e ]
-  , [ e, e, e, e, e ]
-  ]
-
-testBackMap :: Matrix (Cell Object)
-testBackMap = fromMaybe empty $ fromArray
-  [ [ e, w, e, e, e ]
-  , [ b, b, e, e, e ]
-  , [ e, e, e, e, e ]
-  , [ e, e, e, e, e ]
-  , [ e, e, e, e, e ]
-  ]
-
-testDestinations :: forall a. Map2D a
-testDestinations = Map2D $ empty
-
-testMap2D :: Map2D (Cell Object)
-testMap2D = Map2D $ fromMaybe empty $ set 2 2 SingularPoint
-  =<< zipWith (\x y -> NotSingularPoint (x /\ y)) testFrontMap testBackMap
-
-testMapState :: MapState
-testMapState = MapState
-  { character: LatticePoint Front 0 0
-  , destinations: testDestinations
-  , map2D: testMap2D
-  }
