@@ -33,7 +33,7 @@ testFrontMap = fromMaybe empty $ fromArray
   [ [ e, e, e, e, e ]
   , [ e, e, e, e, e ]
   , [ e, e, e, e, e ]
-  , [ e, e, e, e, e ]
+  , [ e, a, e, e, e ]
   , [ e, e, e, e, e ]
   ]
 
@@ -57,19 +57,18 @@ testWalk :: Array Directions
 testWalk =
   [ Down
   , Down
+  , Down
   , Right
   , Right
-  , Up
-  , Up
-  , Left
-  , Left
+  , Right
+  , Right
   ]
 
 testMapState :: MapState
 testMapState = MapState
-  { character: LatticePoint Front 1 1
+  { character: LatticePoint Front 0 0
   , destinations: testDestinations
-  , map2d: testMap2D
+  , map2D: testMap2D
   }
 
 testCompute1 :: LatticePoint -> Directions -> Maybe LatticePoint
@@ -83,12 +82,12 @@ test = do
     state <- read stateRef
     let
       newState = move state dir
-    logShow $ (\(MapState { character }) -> character) $ newState
+    logShow newState
     write newState stateRef
   for_ testWalk \dir -> do
     state <- read stateRef
     let
       newState = move state dir
-    logShow $ (\(MapState { character }) -> character) $ newState
+    logShow newState
     write newState stateRef
   pure unit
