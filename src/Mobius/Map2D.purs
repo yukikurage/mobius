@@ -6,6 +6,7 @@ import Common (get, modify, set, upRange)
 import Data.Array (filter, length)
 import Data.Int (odd)
 import Data.Maybe (Maybe(..), fromMaybe)
+import Data.String as String
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested ((/\))
 import Matrix (Matrix, height, width)
@@ -20,7 +21,7 @@ derive instance Functor Cell
 
 instance Show a => Show (Cell a) where
   show = case _ of
-    Empty -> "　"
+    Empty -> "＿"
     Object a -> show a
 
 data WithSingularPoint a = SingularPoint | NotSingularPoint a
@@ -36,10 +37,11 @@ instance Show a => Show (WithSingularPoint a) where
 data Map2D a = Map2D (Matrix (WithSingularPoint (Tuple a a)))
 
 instance Show a => Show (Map2D a) where
-  show (Map2D m) = show front <> "\n\n" <> show back <> "\n"
+  show (Map2D m) = deleteComma (show front) <> "\n\n" <> deleteComma (show back) <> "\n"
     where
     front = map (map fst) m
     back = map (map snd) m
+    deleteComma = String.replaceAll (String.Pattern ",") (String.Replacement "")
 
 -- | Nothingのときは範囲外
 index :: forall a. Map2D a -> LatticePoint -> Maybe (WithSingularPoint a)
