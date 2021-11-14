@@ -41,7 +41,7 @@ instance Show a => Show (Map2D a) where
     front = map (map fst) m
     back = map (map snd) m
 
--- | Nothingのときはなんにも無い
+-- | Nothingのときは範囲外
 index :: forall a. Map2D a -> LatticePoint -> Maybe (WithSingularPoint a)
 index (Map2D m) (LatticePoint s i j) = map (map f) $ get i j m
   where
