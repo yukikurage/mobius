@@ -12,7 +12,8 @@ to generate this file without the comments in this block.
 -}
 { name = "my-project"
 , dependencies =
-  [ "arrays"
+  [ "aff"
+  , "arrays"
   , "console"
   , "debug"
   , "effect"
@@ -26,6 +27,8 @@ to generate this file without the comments in this block.
   , "psci-support"
   , "refs"
   , "tuples"
+  , "web-dom"
+  , "web-uievents"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
