@@ -15,12 +15,13 @@ data MapState = MapState
   }
 
 instance Show MapState where
-  show (MapState { map2D, character, destinations }) = "MapState{\nmap2D:\n"
+  show (MapState { map2D, character, destinations }) = "MapState{"
     <> show map2D
     <> ",\ncharacter:"
     <> show character
     <> ",\ndestinations:\n"
     <> show destinations
+    <> "\n}"
 
 move :: MapState -> Directions -> MapState
 move (MapState { map2D, character, destinations }) d = MapState $ case compute map2D character d of
