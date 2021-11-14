@@ -8,7 +8,7 @@ import Effect.Aff (launchAff_)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Web.DOM.ParentNode (QuerySelector(..))
-import WebApp.Components.Body as Body
+import WebApp.Components.TestPlay as TestPlay
 
 main :: Effect Unit
 main =
@@ -17,4 +17,4 @@ main =
 
     bodyElem <- HA.selectElement (QuerySelector "body")
 
-    traverse_ (runUI Body.component unit) bodyElem
+    traverse_ (runUI TestPlay.component unit) bodyElem
