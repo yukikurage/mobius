@@ -28,6 +28,7 @@ to generate this file without the comments in this block.
   , "refs"
   , "tuples"
   , "web-dom"
+  , "web-html"
   , "web-uievents"
   ]
 , packages = ./packages.dhall
