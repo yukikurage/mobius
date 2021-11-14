@@ -8,7 +8,7 @@ import Effect.Aff (launchAff_)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Web.DOM.ParentNode (QuerySelector(..))
-import WebApp.Components.TestPlay as TestPlay
+import Mobius.WebApp.Components.TestPlay as TestPlay
 
 main :: Effect Unit
 main =

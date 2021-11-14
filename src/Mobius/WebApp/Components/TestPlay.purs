@@ -1,4 +1,4 @@
-module WebApp.Components.TestPlay (component) where
+module Mobius.WebApp.Components.TestPlay (component) where
 
 import Prelude hiding (div)
 
@@ -17,7 +17,7 @@ import Mobius.MapState (MapState(..), move)
 import Mobius.Object (Object(..))
 import Mobius.Surface (Surface(..))
 import Web.UIEvent.KeyboardEvent (key)
-import WebApp.Components.Common (css, makeText)
+import Mobius.WebApp.Components.Common (css, makeText)
 
 component :: forall q i o m. Monad m => MonadEffect m => Component q i o m
 component = Hooks.component \_ _ -> Hooks.do

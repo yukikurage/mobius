@@ -1,4 +1,4 @@
-module WebApp.Components.Common where
+module Mobius.WebApp.Components.Common where
 
 import Prelude
 

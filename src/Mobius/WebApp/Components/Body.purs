@@ -1,4 +1,4 @@
-module WebApp.Components.Body (component) where
+module Mobius.WebApp.Components.Body (component) where
 
 import Prelude hiding (div)
 
