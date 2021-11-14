@@ -5,9 +5,10 @@ import Prelude
 import Common (upRange)
 import Data.Array (filter, length)
 import Data.Int (odd)
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Tuple (Tuple(..), fst, snd)
-import Matrix (Matrix, get, height, width)
+import Data.Tuple.Nested ((/\))
+import Matrix (Matrix, get, height, modify, set, width)
 import Mobius.Directions (Directions(..))
 import Mobius.LatticePoint (LatticePoint(..))
 import Mobius.Surface (Surface(..), changeSurface)
@@ -69,3 +70,22 @@ compute m (LatticePoint s i j) d = Just $ LatticePoint newS newI newJ
 
 inRange :: forall a. Map2D a -> LatticePoint -> Boolean
 inRange (Map2D m) (LatticePoint _ i j) = 0 <= i && i < height m && 0 <= j && j < width m
+
+-- | 指定した場所を更新．
+-- | 特異点は更新できない
+updateAt :: forall a. LatticePoint -> a -> Map2D a -> Map2D a
+updateAt (LatticePoint s i j) x (Map2D m) = Map2D $ fromMaybe m $ modify i j f m
+  where
+  f SingularPoint = SingularPoint
+  f (NotSingularPoint (y /\ z)) = NotSingularPoint $ if s == Front then x /\ z else y /\ x
+
+-- | 指定した場所の特異点を削除して更新．
+-- | 指定した場所に特異点が無かった場合，そのまま返す
+updateSingularPoint :: forall a. Int -> Int -> Tuple a a -> Map2D a -> Map2D a
+updateSingularPoint i j x (Map2D m) = Map2D $ fromMaybe m $ modify i j f m
+  where
+  f SingularPoint = NotSingularPoint x
+  f t = t
+
+makeSingularPoint :: forall a. Int -> Int -> Map2D a -> Map2D a
+makeSingularPoint i j (Map2D m) = Map2D $ fromMaybe m $ set i j SingularPoint m
