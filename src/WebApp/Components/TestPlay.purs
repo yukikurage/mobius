@@ -55,7 +55,7 @@ testFrontMap = fromMaybe empty $ fromArray
   [ [ e, e, e, e, e ]
   , [ e, e, e, b, w ]
   , [ e, e, e, e, e ]
-  , [ e, a, e, w, e ]
+  , [ e, a, e, e, e ]
   , [ e, e, e, e, e ]
   ]
 
