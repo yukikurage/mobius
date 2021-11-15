@@ -22,6 +22,7 @@ to generate this file without the comments in this block.
   , "halogen"
   , "halogen-hooks"
   , "integers"
+  , "math"
   , "matrices"
   , "maybe"
   , "ordered-collections"
