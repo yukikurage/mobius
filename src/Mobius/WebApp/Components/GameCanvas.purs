@@ -12,6 +12,7 @@ import Halogen.Hooks as Hooks
 import Mobius.Game.Assets (imageSources)
 import Mobius.Game.Drawable (draw)
 import Mobius.Game.GameManager (runGame)
+import Mobius.Game.GameSettings (canvasHeight, canvasWidth)
 import Mobius.Game.GameState (initGameState, keyHandler)
 import Mobius.WebApp.Components.Common (css)
 
@@ -21,7 +22,7 @@ component = Hooks.component \_ _ -> Hooks.do
     maybeCanvas <- liftEffect $ getCanvasElementById "canvas"
     case maybeCanvas of
       Just canvas -> liftEffect do
-        runGame { canvas, images: imageSources, fps: 30, initState: initGameState, keyHandler: keyHandler, render: draw, height: 480.0, width: 480.0 }
+        runGame { canvas, images: imageSources, fps: 30, initState: initGameState, keyHandler: keyHandler, render: draw, height: canvasHeight, width: canvasWidth }
       -- width <- getCanvasWidth canvas
       -- height <- getCanvasHeight canvas
       -- clearRect ctx { x: 0.0, y: 0.0, width, height }

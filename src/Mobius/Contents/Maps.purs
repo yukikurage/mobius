@@ -24,6 +24,10 @@ b = Object Box
 w :: Cell Object
 w = Object Wall
 
+f = false
+
+t = true
+
 singu :: forall a. WithSingularPoint a
 singu = SingularPoint
 
@@ -35,11 +39,19 @@ infix 5 makeDoubledCell as ~
 testMapState :: MapEnv
 testMapState = MapEnv
   { character: LatticePoint Front 6 3
-  , destinations: Map2D $ empty
+  , destinations: Map2D $ fromMaybe empty $ fromArray
+      [ [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, singu, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, t ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      ]
   , map2D: Map2D $ fromMaybe empty $ fromArray
       [ [ w ~ e, w ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e ]
       , [ w ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e ]
-      , [ e ~ e, e ~ e, e ~ e, e ~ b, e ~ e, e ~ e, e ~ e ]
+      , [ e ~ e, e ~ e, e ~ e, b ~ e, e ~ e, e ~ e, e ~ e ]
       , [ e ~ e, e ~ e, w ~ a, singu, a ~ w, e ~ e, e ~ e ]
       , [ e ~ e, e ~ e, e ~ e, b ~ e, e ~ e, e ~ e, e ~ e ]
       , [ e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ w ]

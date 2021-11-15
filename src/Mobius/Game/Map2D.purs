@@ -28,7 +28,7 @@ instance Show a => Show (Cell a) where
 
 instance Drawable a => Drawable (Cell a) where
   draw ctx images = case _ of
-    Empty -> drawImagesFromImages ctx images "empty"
+    Empty -> pure unit
     Object a -> draw ctx images a
 
 data WithSingularPoint a = SingularPoint | NotSingularPoint a
@@ -113,23 +113,23 @@ makeSingularPoint i j (Map2D m) = Map2D $ fromMaybe m $ set i j SingularPoint m
 
 -- | 特異点を動かす
 -- | 範囲外でも問答無用
-moveSingularPoint :: forall a. Point -> Directions -> Map2D (Cell a) -> Map2D (Cell a)
-moveSingularPoint (Point i j) d map2D@(Map2D m) = case indexWithPoint map2D (Point i j) of
+moveSingularPoint :: forall a. Point -> Directions -> a -> Map2D a -> Map2D a
+moveSingularPoint (Point i j) d emp map2D@(Map2D m) = case indexWithPoint map2D (Point i j) of
   Just SingularPoint -> case d of
     Left -> newMap
       where
       swappedMap = Map2D $ foldl (\acc k -> fromMaybe acc $ modify k (j - 1) f acc) m $ upRange (i + 1) $ height m
       f SingularPoint = SingularPoint
       f (NotSingularPoint (x /\ y)) = NotSingularPoint $ y /\ x
-      newMap = makeSingularPoint i (j - 1) $ updateSingularPoint i j (Empty /\ Empty) swappedMap
+      newMap = makeSingularPoint i (j - 1) $ updateSingularPoint i j (emp /\ emp) swappedMap
     Right -> newMap
       where
       swappedMap = Map2D $ foldl (\acc k -> fromMaybe acc $ modify k j f acc) m $ upRange (i + 1) $ height m
       f SingularPoint = SingularPoint
       f (NotSingularPoint (x /\ y)) = NotSingularPoint $ y /\ x
-      newMap = makeSingularPoint i (j + 1) $ updateSingularPoint i j (Empty /\ Empty) swappedMap
-    Up -> makeSingularPoint (i - 1) j $ updateSingularPoint i j (Empty /\ Empty) map2D
-    Down -> makeSingularPoint (i + 1) j $ updateSingularPoint i j (Empty /\ Empty) map2D
+      newMap = makeSingularPoint i (j + 1) $ updateSingularPoint i j (emp /\ emp) swappedMap
+    Up -> makeSingularPoint (i - 1) j $ updateSingularPoint i j (emp /\ emp) map2D
+    Down -> makeSingularPoint (i + 1) j $ updateSingularPoint i j (emp /\ emp) map2D
     Change -> map2D
   _ -> map2D
 

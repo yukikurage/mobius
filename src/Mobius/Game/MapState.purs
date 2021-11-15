@@ -3,7 +3,7 @@ module Mobius.Game.MapState where
 import Prelude
 
 import Common (upRange)
-import Data.Array (cons, uncons)
+import Data.Array (all, cons, filter, uncons)
 import Data.Int (toNumber)
 import Data.Maybe (Maybe(..))
 import Data.Traversable (for_)
@@ -16,7 +16,7 @@ import Mobius.Game.Drawable (class Drawable, draw)
 import Mobius.Game.GameSettings (canvasHeight, canvasWidth, cellSize)
 import Mobius.Game.LatticePoint (LatticePoint(..), Point(..), computeWithPoint, toPoint)
 import Mobius.Game.Map2D (Cell(..), Map2D, WithSingularPoint(..), compute, heightMap2D, index, indexWithPoint, moveSingularPoint, updateAt, widthMap2D)
-import Mobius.Game.Object (Object, ObjectProperty(..), objectProperty)
+import Mobius.Game.Object (Object(..), ObjectProperty(..), objectProperty)
 import Mobius.Game.Surface (Surface(..))
 
 data MapEnv = MapEnv
@@ -28,6 +28,19 @@ data MapEnv = MapEnv
 data MapState = MapState { mapEnv :: MapEnv, history :: Array MapEnv, initMap :: MapEnv }
 
 data Input = Move Directions | Z | R
+
+isClear :: MapState -> Boolean
+isClear (MapState { mapEnv: (MapEnv { map2D, destinations }) }) =
+  let
+    h = heightMap2D map2D
+    w = widthMap2D map2D
+    allBox = filter (\x -> index map2D x == Just (NotSingularPoint (Object Box))) do
+      i <- (upRange 0 (h - 1))
+      j <- (upRange 0 (w - 1))
+      s <- [ Front, Back ]
+      pure $ LatticePoint s i j
+  in
+    all (\i -> index destinations i == Just (NotSingularPoint true)) allBox
 
 makeMapState :: MapEnv -> MapState
 makeMapState env = MapState { mapEnv: env, history: [], initMap: env }
@@ -54,9 +67,12 @@ move (MapEnv { map2D, character, destinations }) d = MapEnv $ case compute map2D
   Nothing -> { map2D, character, destinations } --今いる場所が特異点ならすすめない
   Just nextPos -> case index map2D nextPos of --目の前が
     Just SingularPoint -> case indexWithPoint map2D doubleNextPoint of --特異点ならばさらにその前が
-      Just (NotSingularPoint (Empty /\ Empty)) -> { map2D: newMap2D, character: nextPos, destinations } --両面になにも無いならすすめる
+      Just (NotSingularPoint (Empty /\ Empty)) -> case indexWithPoint destinations doubleNextPoint of --両面になにも無いなら
+        Just (NotSingularPoint (false /\ false)) -> { map2D: newMap2D, character: nextPos, destinations: newDestinations } --さらに目的地も両面にないならすすめる
+        _ -> { map2D, character, destinations } --それ以外なら進めない
         where
-        newMap2D = moveSingularPoint nextPoint d map2D
+        newMap2D = moveSingularPoint nextPoint d Empty map2D
+        newDestinations = moveSingularPoint nextPoint d false destinations
       _ -> { map2D, character, destinations } --それ以外なら進めない
       where
       nextPoint = toPoint nextPos
@@ -76,7 +92,7 @@ move (MapEnv { map2D, character, destinations }) d = MapEnv $ case compute map2D
     Nothing -> { map2D, character, destinations } --範囲外ならすすめない
 
 instance Drawable MapState where
-  draw ctx images (MapState { mapEnv: (MapEnv { map2D, character: character@(LatticePoint s ci cj) }) }) = do
+  draw ctx images (MapState { mapEnv: (MapEnv { map2D, character: character@(LatticePoint s ci cj), destinations }) }) = do
     let
       h = heightMap2D map2D
       w = widthMap2D map2D
@@ -141,6 +157,18 @@ instance Drawable MapState where
           fillRest
         _ -> pure unit
 
+    -- 地面(上)を描画
+    setGlobalCompositeOperation ctx SourceAtop
+    for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
+      translate ctx
+        { translateX: startWidth + toNumber j * cellSize
+        , translateY: startHeight + toNumber i * cellSize
+        }
+      case index destinations (LatticePoint Front i j) of
+        Just (NotSingularPoint true) -> drawImagesFromImages ctx images "destination"
+        _ -> drawImagesFromImages ctx images "empty"
+      resetTransForm ctx
+
     -- 上のレイヤーを描画
     setGlobalCompositeOperation ctx SourceAtop
     for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
@@ -186,7 +214,6 @@ instance Drawable MapState where
 
     --あの線を描画
     setLineWidth ctx 2.0
-    setFillStyle ctx "#161616"
     setStrokeStyle ctx "#161616"
     setGlobalCompositeOperation ctx SourceOver
     for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
@@ -202,4 +229,14 @@ instance Drawable MapState where
             lineTo ctx (centerX - toNumber dj) (centerY - toNumber di)
         _ -> pure unit
 
-    resetTransForm ctx
+    -- 地面(下)を描画
+    setGlobalCompositeOperation ctx DestinationOver
+    for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
+      translate ctx
+        { translateX: startWidth + toNumber j * cellSize
+        , translateY: startHeight + toNumber i * cellSize
+        }
+      case index destinations (LatticePoint Back i j) of
+        Just (NotSingularPoint true) -> drawImagesFromImages ctx images "destination"
+        _ -> drawImagesFromImages ctx images "empty"
+      resetTransForm ctx

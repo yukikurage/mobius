@@ -4,7 +4,7 @@ cellSize :: Number
 cellSize = 32.0
 
 canvasHeight :: Number
-canvasHeight = 480.0
+canvasHeight = 320.0
 
 canvasWidth :: Number
-canvasWidth = 480.0
+canvasWidth = 320.0
