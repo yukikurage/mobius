@@ -8,7 +8,7 @@ import Effect.Aff (launchAff_)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Web.DOM.ParentNode (QuerySelector(..))
-import Mobius.WebApp.Components.TestPlay as TestPlay
+import Mobius.WebApp.Components.GameCanvas as GameCanvas
 
 main :: Effect Unit
 main =
@@ -17,4 +17,4 @@ main =
 
     bodyElem <- HA.selectElement (QuerySelector "body")
 
-    traverse_ (runUI TestPlay.component unit) bodyElem
+    traverse_ (runUI GameCanvas.component unit) bodyElem

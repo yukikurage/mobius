@@ -24,6 +24,7 @@ to generate this file without the comments in this block.
   , "integers"
   , "matrices"
   , "maybe"
+  , "ordered-collections"
   , "prelude"
   , "psci-support"
   , "refs"

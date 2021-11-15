@@ -3,15 +3,17 @@ module Mobius.Game.Map2D where
 import Prelude
 
 import Common (get, modify, set, upRange)
-import Data.Array (filter, length)
+import Data.Array (filter, foldl, length)
 import Data.Int (odd)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String as String
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested ((/\))
 import Matrix (Matrix, height, width)
+import Mobius.Game.Common (drawImagesFromImages)
 import Mobius.Game.Directions (Directions(..))
-import Mobius.Game.LatticePoint (LatticePoint(..))
+import Mobius.Game.Drawable (class Drawable, draw)
+import Mobius.Game.LatticePoint (LatticePoint(..), Point(..), computeWithPoint, fromPoint, toPoint)
 import Mobius.Game.Surface (Surface(..), changeSurface)
 
 data Cell a = Empty | Object a
@@ -24,6 +26,11 @@ instance Show a => Show (Cell a) where
     Empty -> "＿"
     Object a -> show a
 
+instance Drawable a => Drawable (Cell a) where
+  draw ctx images = case _ of
+    Empty -> pure unit
+    Object a -> draw ctx images a
+
 data WithSingularPoint a = SingularPoint | NotSingularPoint a
 
 derive instance Eq a => Eq (WithSingularPoint a)
@@ -34,6 +41,11 @@ instance Show a => Show (WithSingularPoint a) where
     SingularPoint -> "🌀"
     NotSingularPoint a -> show a
 
+instance Drawable a => Drawable (WithSingularPoint a) where
+  draw ctx images = case _ of
+    SingularPoint -> drawImagesFromImages ctx images "mobius"
+    NotSingularPoint a -> draw ctx images a
+
 data Map2D a = Map2D (Matrix (WithSingularPoint (Tuple a a)))
 
 instance Show a => Show (Map2D a) where
@@ -42,6 +54,9 @@ instance Show a => Show (Map2D a) where
     front = map (map fst) m
     back = map (map snd) m
     deleteComma = String.replaceAll (String.Pattern ",") (String.Replacement "")
+
+indexWithPoint :: forall a. Map2D a -> Point -> Maybe (WithSingularPoint (Tuple a a))
+indexWithPoint (Map2D m) (Point i j) = get i j m
 
 -- | Nothingのときは範囲外
 index :: forall a. Map2D a -> LatticePoint -> Maybe (WithSingularPoint a)
@@ -54,6 +69,10 @@ index (Map2D m) (LatticePoint s i j) = map (map f) $ get i j m
 compute :: forall a. Eq a => Map2D a -> LatticePoint -> Directions -> Maybe LatticePoint
 compute m p _ | index m p == Just SingularPoint = Nothing
 compute _ (LatticePoint s i j) Change = Just $ LatticePoint (changeSurface s) i j
+compute m p@(LatticePoint s _ _) d
+  | indexWithPoint m (computeWithPoint (toPoint p) d) == Just SingularPoint = Just $ fromPoint s computedPoint
+      where
+      computedPoint = computeWithPoint (toPoint p) d
 compute m (LatticePoint s i j) d = Just $ LatticePoint newS newI newJ
   where
   isCrossBridge = case d of
@@ -91,3 +110,31 @@ updateSingularPoint i j x (Map2D m) = Map2D $ fromMaybe m $ modify i j f m
 
 makeSingularPoint :: forall a. Int -> Int -> Map2D a -> Map2D a
 makeSingularPoint i j (Map2D m) = Map2D $ fromMaybe m $ set i j SingularPoint m
+
+-- | 特異点を動かす
+-- | 範囲外でも問答無用
+moveSingularPoint :: forall a. Point -> Directions -> Map2D (Cell a) -> Map2D (Cell a)
+moveSingularPoint (Point i j) d map2D@(Map2D m) = case indexWithPoint map2D (Point i j) of
+  Just SingularPoint -> case d of
+    Left -> newMap
+      where
+      swappedMap = Map2D $ foldl (\acc k -> fromMaybe acc $ modify k (j - 1) f acc) m $ upRange (i + 1) $ height m
+      f SingularPoint = SingularPoint
+      f (NotSingularPoint (x /\ y)) = NotSingularPoint $ y /\ x
+      newMap = makeSingularPoint i (j - 1) $ updateSingularPoint i j (Empty /\ Empty) swappedMap
+    Right -> newMap
+      where
+      swappedMap = Map2D $ foldl (\acc k -> fromMaybe acc $ modify k j f acc) m $ upRange (i + 1) $ height m
+      f SingularPoint = SingularPoint
+      f (NotSingularPoint (x /\ y)) = NotSingularPoint $ y /\ x
+      newMap = makeSingularPoint i (j + 1) $ updateSingularPoint i j (Empty /\ Empty) swappedMap
+    Up -> makeSingularPoint (i - 1) j $ updateSingularPoint i j (Empty /\ Empty) map2D
+    Down -> makeSingularPoint (i + 1) j $ updateSingularPoint i j (Empty /\ Empty) map2D
+    Change -> map2D
+  _ -> map2D
+
+heightMap2D :: forall a. Map2D a -> Int
+heightMap2D (Map2D m) = height m
+
+widthMap2D :: forall a. Map2D a -> Int
+widthMap2D (Map2D m) = width m

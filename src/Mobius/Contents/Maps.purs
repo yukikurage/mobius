@@ -8,7 +8,7 @@ import Data.Tuple.Nested ((/\))
 import Matrix (empty, fromArray)
 import Mobius.Game.LatticePoint (LatticePoint(..))
 import Mobius.Game.Map2D (Cell(..), Map2D(..), WithSingularPoint(..))
-import Mobius.Game.MapState (MapState(..))
+import Mobius.Game.MapState (MapEnv(..))
 import Mobius.Game.Object (Object(..))
 import Mobius.Game.Surface (Surface(..))
 
@@ -32,8 +32,8 @@ makeDoubledCell x y = NotSingularPoint $ x /\ y
 
 infix 5 makeDoubledCell as ~
 
-testMapState :: MapState
-testMapState = MapState
+testMapState :: MapEnv
+testMapState = MapEnv
   { character: LatticePoint Front 1 0
   , destinations: Map2D $ empty
   , map2D: Map2D $ fromMaybe empty $ fromArray
