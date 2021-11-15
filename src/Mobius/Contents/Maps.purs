@@ -38,23 +38,21 @@ infix 5 makeDoubledCell as ~
 
 testMapState :: MapEnv
 testMapState = MapEnv
-  { character: LatticePoint Front 6 3
+  { character: LatticePoint Front 5 3
   , destinations: Map2D $ fromMaybe empty $ fromArray
-      [ [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, singu, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, t ~ f, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
-      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      [ [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ t, f ~ f ]
+      , [ f ~ f, f ~ f, singu, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
+      , [ f ~ f, f ~ f, f ~ f, f ~ f, f ~ f, f ~ f ]
       ]
   , map2D: Map2D $ fromMaybe empty $ fromArray
-      [ [ w ~ e, w ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e ]
-      , [ w ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e ]
-      , [ e ~ e, e ~ e, e ~ e, b ~ e, e ~ e, e ~ e, e ~ e ]
-      , [ e ~ e, e ~ e, w ~ a, singu, a ~ w, e ~ e, e ~ e ]
-      , [ e ~ e, e ~ e, e ~ e, b ~ e, e ~ e, e ~ e, e ~ e ]
-      , [ e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ w ]
-      , [ e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ w, e ~ w ]
+      [ [ a ~ e, w ~ w, e ~ e, e ~ w, e ~ e, e ~ e ]
+      , [ a ~ e, w ~ w, e ~ e, w ~ w, e ~ e, e ~ e ]
+      , [ a ~ e, w ~ e, e ~ a, e ~ e, b ~ e, e ~ e ]
+      , [ e ~ e, w ~ w, singu, w ~ w, w ~ e, e ~ e ]
+      , [ e ~ e, e ~ e, e ~ w, e ~ e, e ~ e, e ~ e ]
+      , [ e ~ e, e ~ e, e ~ e, e ~ e, e ~ e, e ~ e ]
       ]
   }
