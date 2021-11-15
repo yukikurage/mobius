@@ -5098,6 +5098,38 @@ var PS = {};
       };
   };
 
+  exports.setLineWidth = function(ctx) {
+      return function(width) {
+          return function() {
+              ctx.lineWidth = width;
+          };
+      };
+  };
+
+  exports.setFillStyle = function(ctx) {
+      return function(style) {
+          return function() {
+              ctx.fillStyle = style;
+          };
+      };
+  };
+
+  exports.setStrokeStyle = function(ctx) {
+      return function(style) {
+          return function() {
+              ctx.strokeStyle = style;
+          };
+      };
+  };
+
+  exports.setGlobalCompositeOperationImpl = function(ctx) {
+      return function(op) {
+          return function() {
+              ctx.globalCompositeOperation = op;
+          };
+      };
+  };
+
   exports.beginPath = function(ctx) {
       return function() {
           ctx.beginPath();
@@ -5107,6 +5139,12 @@ var PS = {};
   exports.stroke = function(ctx) {
       return function() {
           ctx.stroke();
+      };
+  };
+
+  exports.fill = function(ctx) {
+      return function() {
+          ctx.fill();
       };
   };
 
@@ -5130,9 +5168,19 @@ var PS = {};
       };
   };
 
-  exports.closePath = function(ctx) {
-      return function() {
-          ctx.closePath();
+  exports.arc = function(ctx) {
+      return function(a) {
+          return function() {
+              ctx.arc(a.x, a.y, a.radius, a.start, a.end);
+          };
+      };
+  };
+
+  exports.rect = function(ctx) {
+      return function(r) {
+          return function() {
+              ctx.rect(r.x, r.y, r.width, r.height);
+          };
       };
   };
 
@@ -5237,6 +5285,188 @@ var PS = {};
       BaselineBottom.value = new BaselineBottom();
       return BaselineBottom;
   })();
+  var SourceOver = (function () {
+      function SourceOver() {
+
+      };
+      SourceOver.value = new SourceOver();
+      return SourceOver;
+  })();
+  var SourceIn = (function () {
+      function SourceIn() {
+
+      };
+      SourceIn.value = new SourceIn();
+      return SourceIn;
+  })();
+  var SourceOut = (function () {
+      function SourceOut() {
+
+      };
+      SourceOut.value = new SourceOut();
+      return SourceOut;
+  })();
+  var SourceAtop = (function () {
+      function SourceAtop() {
+
+      };
+      SourceAtop.value = new SourceAtop();
+      return SourceAtop;
+  })();
+  var DestinationOver = (function () {
+      function DestinationOver() {
+
+      };
+      DestinationOver.value = new DestinationOver();
+      return DestinationOver;
+  })();
+  var DestinationIn = (function () {
+      function DestinationIn() {
+
+      };
+      DestinationIn.value = new DestinationIn();
+      return DestinationIn;
+  })();
+  var DestinationOut = (function () {
+      function DestinationOut() {
+
+      };
+      DestinationOut.value = new DestinationOut();
+      return DestinationOut;
+  })();
+  var DestinationAtop = (function () {
+      function DestinationAtop() {
+
+      };
+      DestinationAtop.value = new DestinationAtop();
+      return DestinationAtop;
+  })();
+  var Lighter = (function () {
+      function Lighter() {
+
+      };
+      Lighter.value = new Lighter();
+      return Lighter;
+  })();
+  var Copy = (function () {
+      function Copy() {
+
+      };
+      Copy.value = new Copy();
+      return Copy;
+  })();
+  var Xor = (function () {
+      function Xor() {
+
+      };
+      Xor.value = new Xor();
+      return Xor;
+  })();
+  var Multiply = (function () {
+      function Multiply() {
+
+      };
+      Multiply.value = new Multiply();
+      return Multiply;
+  })();
+  var Screen = (function () {
+      function Screen() {
+
+      };
+      Screen.value = new Screen();
+      return Screen;
+  })();
+  var Overlay = (function () {
+      function Overlay() {
+
+      };
+      Overlay.value = new Overlay();
+      return Overlay;
+  })();
+  var Darken = (function () {
+      function Darken() {
+
+      };
+      Darken.value = new Darken();
+      return Darken;
+  })();
+  var Lighten = (function () {
+      function Lighten() {
+
+      };
+      Lighten.value = new Lighten();
+      return Lighten;
+  })();
+  var ColorDodge = (function () {
+      function ColorDodge() {
+
+      };
+      ColorDodge.value = new ColorDodge();
+      return ColorDodge;
+  })();
+  var ColorBurn = (function () {
+      function ColorBurn() {
+
+      };
+      ColorBurn.value = new ColorBurn();
+      return ColorBurn;
+  })();
+  var HardLight = (function () {
+      function HardLight() {
+
+      };
+      HardLight.value = new HardLight();
+      return HardLight;
+  })();
+  var SoftLight = (function () {
+      function SoftLight() {
+
+      };
+      SoftLight.value = new SoftLight();
+      return SoftLight;
+  })();
+  var Difference = (function () {
+      function Difference() {
+
+      };
+      Difference.value = new Difference();
+      return Difference;
+  })();
+  var Exclusion = (function () {
+      function Exclusion() {
+
+      };
+      Exclusion.value = new Exclusion();
+      return Exclusion;
+  })();
+  var Hue = (function () {
+      function Hue() {
+
+      };
+      Hue.value = new Hue();
+      return Hue;
+  })();
+  var Saturation = (function () {
+      function Saturation() {
+
+      };
+      Saturation.value = new Saturation();
+      return Saturation;
+  })();
+  var Color = (function () {
+      function Color() {
+
+      };
+      Color.value = new Color();
+      return Color;
+  })();
+  var Luminosity = (function () {
+      function Luminosity() {
+
+      };
+      Luminosity.value = new Luminosity();
+      return Luminosity;
+  })();
   var tryLoadImage = function (path) {
       return function (k) {
           return $foreign.tryLoadImageImpl(path)(k(Data_Maybe.Nothing.value))(function ($46) {
@@ -5280,20 +5510,127 @@ var PS = {};
           return $foreign.setTextBaselineImpl(ctx)(toString(textbaseline));
       };
   };
+  var setGlobalCompositeOperation = function (ctx) {
+      return function (composite) {
+          var toString = function (v) {
+              if (v instanceof SourceOver) {
+                  return "source-over";
+              };
+              if (v instanceof SourceIn) {
+                  return "source-in";
+              };
+              if (v instanceof SourceOut) {
+                  return "source-out";
+              };
+              if (v instanceof SourceAtop) {
+                  return "source-atop";
+              };
+              if (v instanceof DestinationOver) {
+                  return "destination-over";
+              };
+              if (v instanceof DestinationIn) {
+                  return "destination-in";
+              };
+              if (v instanceof DestinationOut) {
+                  return "destination-out";
+              };
+              if (v instanceof DestinationAtop) {
+                  return "destination-atop";
+              };
+              if (v instanceof Lighter) {
+                  return "lighter";
+              };
+              if (v instanceof Copy) {
+                  return "copy";
+              };
+              if (v instanceof Xor) {
+                  return "xor";
+              };
+              if (v instanceof Multiply) {
+                  return "multiply";
+              };
+              if (v instanceof Screen) {
+                  return "screen";
+              };
+              if (v instanceof Overlay) {
+                  return "overlay";
+              };
+              if (v instanceof Darken) {
+                  return "darken";
+              };
+              if (v instanceof Lighten) {
+                  return "lighten";
+              };
+              if (v instanceof ColorDodge) {
+                  return "color-dodge";
+              };
+              if (v instanceof ColorBurn) {
+                  return "color-burn";
+              };
+              if (v instanceof HardLight) {
+                  return "hard-light";
+              };
+              if (v instanceof SoftLight) {
+                  return "soft-light";
+              };
+              if (v instanceof Difference) {
+                  return "difference";
+              };
+              if (v instanceof Exclusion) {
+                  return "exclusion";
+              };
+              if (v instanceof Hue) {
+                  return "hue";
+              };
+              if (v instanceof Saturation) {
+                  return "saturation";
+              };
+              if (v instanceof Color) {
+                  return "color";
+              };
+              if (v instanceof Luminosity) {
+                  return "luminosity";
+              };
+              throw new Error("Failed pattern match at Graphics.Canvas (line 325, column 5 - line 325, column 45): " + [ v.constructor.name ]);
+          };
+          return $foreign.setGlobalCompositeOperationImpl(ctx)(toString(composite));
+      };
+  };
   var getCanvasElementById = function (elId) {
       return $foreign.getCanvasElementByIdImpl(elId, Data_Maybe.Just.create, Data_Maybe.Nothing.value);
   };
+  var fillPath = function (ctx) {
+      return function (path) {
+          return function __do() {
+              $foreign.beginPath(ctx)();
+              var a = path();
+              $foreign.fill(ctx)();
+              return a;
+          };
+      };
+  };
+  exports["SourceOver"] = SourceOver;
+  exports["SourceAtop"] = SourceAtop;
+  exports["DestinationOver"] = DestinationOver;
+  exports["Xor"] = Xor;
   exports["BaselineTop"] = BaselineTop;
   exports["getCanvasElementById"] = getCanvasElementById;
+  exports["setGlobalCompositeOperation"] = setGlobalCompositeOperation;
   exports["strokePath"] = strokePath;
+  exports["fillPath"] = fillPath;
   exports["setTextBaseline"] = setTextBaseline;
   exports["tryLoadImage"] = tryLoadImage;
   exports["getContext2D"] = $foreign.getContext2D;
   exports["setCanvasWidth"] = $foreign.setCanvasWidth;
   exports["setCanvasHeight"] = $foreign.setCanvasHeight;
+  exports["setLineWidth"] = $foreign.setLineWidth;
+  exports["setFillStyle"] = $foreign.setFillStyle;
+  exports["setStrokeStyle"] = $foreign.setStrokeStyle;
+  exports["fill"] = $foreign.fill;
   exports["lineTo"] = $foreign.lineTo;
   exports["moveTo"] = $foreign.moveTo;
-  exports["closePath"] = $foreign.closePath;
+  exports["arc"] = $foreign.arc;
+  exports["rect"] = $foreign.rect;
   exports["clearRect"] = $foreign.clearRect;
   exports["translate"] = $foreign.translate;
   exports["setTransform"] = $foreign.setTransform;
@@ -9018,7 +9355,7 @@ var PS = {};
   $PS["Mobius.Game.Assets"] = $PS["Mobius.Game.Assets"] || {};
   var exports = $PS["Mobius.Game.Assets"];
   var Data_Tuple = $PS["Data.Tuple"];                
-  var imageSources = [ new Data_Tuple.Tuple("apple", "./images/cells/apple.png"), new Data_Tuple.Tuple("wall", "./images/cells/wall.png"), new Data_Tuple.Tuple("mobius", "./images/cells/mobius.png"), new Data_Tuple.Tuple("box", "./images/cells/box.png"), new Data_Tuple.Tuple("destination", "./images/cells/destination.png"), new Data_Tuple.Tuple("player", "./images/cells/player.png") ];
+  var imageSources = [ new Data_Tuple.Tuple("apple", "./images/cells/apple.png"), new Data_Tuple.Tuple("wall", "./images/cells/wall.png"), new Data_Tuple.Tuple("mobius", "./images/cells/mobius.png"), new Data_Tuple.Tuple("box", "./images/cells/box.png"), new Data_Tuple.Tuple("destination", "./images/cells/destination.png"), new Data_Tuple.Tuple("player", "./images/cells/player.png"), new Data_Tuple.Tuple("empty", "./images/cells/empty.png") ];
   exports["imageSources"] = imageSources;
 })(PS);
 (function($PS) {
@@ -9183,7 +9520,7 @@ var PS = {};
                               return Effect_Ref.write(newGameState)(gameStateRef)();
                           };
                       };
-                      throw new Error("Failed pattern match at Mobius.Game.GameManager (line 60, column 43 - line 66, column 42): " + [ v1.constructor.name ]);
+                      throw new Error("Failed pattern match at Mobius.Game.GameManager (line 59, column 43 - line 65, column 42): " + [ v1.constructor.name ]);
                   });
               };
               var keyDownHandler = makeHandler(KeyDown.value)();
@@ -9205,7 +9542,7 @@ var PS = {};
                       if (v2 instanceof Data_Maybe.Just) {
                           return loadAndRun(v1.value0.tail)(Data_Map_Internal.insert(Data_Ord.ordString)(Data_Tuple.fst(v1.value0.head))(v2.value0)(imageSources));
                       };
-                      throw new Error("Failed pattern match at Mobius.Game.GameManager (line 46, column 9 - line 46, column 30): " + [ v2.constructor.name ]);
+                      throw new Error("Failed pattern match at Mobius.Game.GameManager (line 45, column 9 - line 45, column 30): " + [ v2.constructor.name ]);
                   };
                   return Graphics_Canvas.tryLoadImage(Data_Tuple.snd(v1.value0.head))(f);
               };
@@ -9221,7 +9558,7 @@ var PS = {};
                       return keyEventRegister(gameStateRef)();
                   };
               };
-              throw new Error("Failed pattern match at Mobius.Game.GameManager (line 43, column 32 - line 55, column 36): " + [ v1.constructor.name ]);
+              throw new Error("Failed pattern match at Mobius.Game.GameManager (line 42, column 32 - line 54, column 36): " + [ v1.constructor.name ]);
           };
       };
       return loadAndRun(v.images)(Data_Map_Internal.empty);
@@ -9345,13 +9682,26 @@ var PS = {};
 (function($PS) {
   // Generated by purs version 0.14.5
   "use strict";
+  $PS["Mobius.Game.GameSettings"] = $PS["Mobius.Game.GameSettings"] || {};
+  var exports = $PS["Mobius.Game.GameSettings"];
+  var cellSize = 32.0;
+  var canvasWidth = 480.0;
+  var canvasHeight = 480.0;
+  exports["cellSize"] = cellSize;
+  exports["canvasHeight"] = canvasHeight;
+  exports["canvasWidth"] = canvasWidth;
+})(PS);
+(function($PS) {
+  // Generated by purs version 0.14.5
+  "use strict";
   $PS["Mobius.Game.Common"] = $PS["Mobius.Game.Common"] || {};
   var exports = $PS["Mobius.Game.Common"];
   var Control_Applicative = $PS["Control.Applicative"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Unit = $PS["Data.Unit"];
   var Effect = $PS["Effect"];
-  var Graphics_Canvas = $PS["Graphics.Canvas"];                
+  var Graphics_Canvas = $PS["Graphics.Canvas"];
+  var Mobius_Game_GameSettings = $PS["Mobius.Game.GameSettings"];                
   var resetTransForm = function (ctx) {
       return Graphics_Canvas.setTransform(ctx)({
           m11: 1.0,
@@ -9361,6 +9711,17 @@ var PS = {};
           m31: 0.0,
           m32: 0.0
       });
+  };
+  var fillCanvas = function (ctx) {
+      return function __do() {
+          Graphics_Canvas.rect(ctx)({
+              x: 0.0,
+              y: 0.0,
+              height: Mobius_Game_GameSettings.canvasHeight,
+              width: Mobius_Game_GameSettings.canvasWidth
+          })();
+          return Graphics_Canvas.fill(ctx)();
+      };
   };
   var drawImagesFromImages = function (ctx) {
       return function (f) {
@@ -9372,12 +9733,22 @@ var PS = {};
               if (v instanceof Data_Maybe.Nothing) {
                   return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
               };
-              throw new Error("Failed pattern match at Mobius.Game.Common (line 10, column 34 - line 12, column 23): " + [ v.constructor.name ]);
+              throw new Error("Failed pattern match at Mobius.Game.Common (line 11, column 34 - line 13, column 23): " + [ v.constructor.name ]);
           };
       };
   };
+  var clearCanvas = function (ctx) {
+      return Graphics_Canvas.clearRect(ctx)({
+          x: 0.0,
+          y: 0.0,
+          height: Mobius_Game_GameSettings.canvasHeight,
+          width: Mobius_Game_GameSettings.canvasWidth
+      });
+  };
   exports["drawImagesFromImages"] = drawImagesFromImages;
   exports["resetTransForm"] = resetTransForm;
+  exports["clearCanvas"] = clearCanvas;
+  exports["fillCanvas"] = fillCanvas;
 })(PS);
 (function($PS) {
   // Generated by purs version 0.14.5
@@ -9431,15 +9802,12 @@ var PS = {};
   $PS["Mobius.Game.Map2D"] = $PS["Mobius.Game.Map2D"] || {};
   var exports = $PS["Mobius.Game.Map2D"];
   var Common = $PS["Common"];
-  var Control_Applicative = $PS["Control.Applicative"];
   var Data_Array = $PS["Data.Array"];
   var Data_Eq = $PS["Data.Eq"];
   var Data_Functor = $PS["Data.Functor"];
   var Data_Int = $PS["Data.Int"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Tuple = $PS["Data.Tuple"];
-  var Data_Unit = $PS["Data.Unit"];
-  var Effect = $PS["Effect"];
   var Matrix = $PS["Matrix"];
   var Mobius_Game_Common = $PS["Mobius.Game.Common"];
   var Mobius_Game_Directions = $PS["Mobius.Game.Directions"];
@@ -9553,7 +9921,7 @@ var PS = {};
               return function (images) {
                   return function (v) {
                       if (v instanceof Empty) {
-                          return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
+                          return Mobius_Game_Common.drawImagesFromImages(ctx)(images)("empty");
                       };
                       if (v instanceof $$Object) {
                           return Mobius_Game_Drawable.draw(dictDrawable)(ctx)(images)(v.value0);
@@ -9760,6 +10128,26 @@ var PS = {};
   exports["drawableCell"] = drawableCell;
   exports["drawableWithSingularPoint"] = drawableWithSingularPoint;
 })(PS);
+(function(exports) {
+  "use strict";            
+
+  exports.atan2 = function (y) {
+    return function (x) {
+      return Math.atan2(y, x);
+    };
+  };                           
+
+  exports.pi = Math.PI;
+})(PS["Math"] = PS["Math"] || {});
+(function($PS) {
+  // Generated by purs version 0.14.5
+  "use strict";
+  $PS["Math"] = $PS["Math"] || {};
+  var exports = $PS["Math"];
+  var $foreign = $PS["Math"];
+  exports["atan2"] = $foreign.atan2;
+  exports["pi"] = $foreign.pi;
+})(PS);
 (function($PS) {
   // Generated by purs version 0.14.5
   "use strict";
@@ -9862,15 +10250,19 @@ var PS = {};
   $PS["Mobius.Game.MapState"] = $PS["Mobius.Game.MapState"] || {};
   var exports = $PS["Mobius.Game.MapState"];
   var Common = $PS["Common"];
+  var Control_Applicative = $PS["Control.Applicative"];
   var Data_Array = $PS["Data.Array"];
+  var Data_Eq = $PS["Data.Eq"];
   var Data_Foldable = $PS["Data.Foldable"];
   var Data_Int = $PS["Data.Int"];
   var Data_Maybe = $PS["Data.Maybe"];
   var Data_Unit = $PS["Data.Unit"];
   var Effect = $PS["Effect"];
   var Graphics_Canvas = $PS["Graphics.Canvas"];
+  var $$Math = $PS["Math"];
   var Mobius_Game_Common = $PS["Mobius.Game.Common"];
   var Mobius_Game_Drawable = $PS["Mobius.Game.Drawable"];
+  var Mobius_Game_GameSettings = $PS["Mobius.Game.GameSettings"];
   var Mobius_Game_LatticePoint = $PS["Mobius.Game.LatticePoint"];
   var Mobius_Game_Map2D = $PS["Mobius.Game.Map2D"];
   var Mobius_Game_Object = $PS["Mobius.Game.Object"];
@@ -9922,16 +10314,77 @@ var PS = {};
               return function (v) {
                   var w = Mobius_Game_Map2D.widthMap2D(v.value0.mapEnv.value0.map2D);
                   var h = Mobius_Game_Map2D.heightMap2D(v.value0.mapEnv.value0.map2D);
-                  var backStartHeight = (Data_Int.toNumber(h) + 1.0) * 32.0;
+                  var startHeight = Mobius_Game_GameSettings.canvasHeight / 2.0 - (Data_Int.toNumber(h) * Mobius_Game_GameSettings.cellSize) / 2.0;
+                  var startWidth = Mobius_Game_GameSettings.canvasWidth / 2.0 - (Data_Int.toNumber(h) * Mobius_Game_GameSettings.cellSize) / 2.0;
                   return function __do() {
                       Graphics_Canvas.setFont(ctx)("20px serif")();
+                      Mobius_Game_Common.resetTransForm(ctx)();
                       Graphics_Canvas.setTextBaseline(ctx)(Graphics_Canvas.BaselineTop.value)();
+                      Graphics_Canvas.setFillStyle(ctx)("#161616")();
+                      Mobius_Game_Common.clearCanvas(ctx)();
+                      Graphics_Canvas.setGlobalCompositeOperation(ctx)(Graphics_Canvas.Xor.value)();
+                      Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(h - 1 | 0))(function (i) {
+                          return Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(w - 1 | 0))(function (j) {
+                              var fillRest = Graphics_Canvas.fillPath(ctx)(Graphics_Canvas.rect(ctx)({
+                                  x: startWidth + Data_Int.toNumber(j) * Mobius_Game_GameSettings.cellSize,
+                                  y: startHeight + Data_Int.toNumber(i) * Mobius_Game_GameSettings.cellSize,
+                                  width: Mobius_Game_GameSettings.cellSize / 2.0,
+                                  height: 1000.0
+                              }));
+                              var centerY = startHeight + (Data_Int.toNumber(i) * Mobius_Game_GameSettings.cellSize + Mobius_Game_GameSettings.cellSize / 2.0);
+                              var centerX = startWidth + (Data_Int.toNumber(j) * Mobius_Game_GameSettings.cellSize + Mobius_Game_GameSettings.cellSize / 2.0);
+                              var v1 = Mobius_Game_Map2D.indexWithPoint(v.value0.mapEnv.value0.map2D)(new Mobius_Game_LatticePoint.Point(i, j));
+                              if (v1 instanceof Data_Maybe.Just && (v1.value0 instanceof Mobius_Game_Map2D.SingularPoint && (v.value0.mapEnv.value0.character.value2 === j && v.value0.mapEnv.value0.character.value1 < i))) {
+                                  return function __do() {
+                                      Control_Applicative.when(Effect.applicativeEffect)(Data_Eq.eq(Mobius_Game_Surface.eqSurface)(v.value0.mapEnv.value0.character.value0)(Mobius_Game_Surface.Front.value))(Mobius_Game_Common.fillCanvas(ctx))();
+                                      return fillRest();
+                                  };
+                              };
+                              if (v1 instanceof Data_Maybe.Just && (v1.value0 instanceof Mobius_Game_Map2D.SingularPoint && (v.value0.mapEnv.value0.character.value2 === j && v.value0.mapEnv.value0.character.value1 > i))) {
+                                  return function __do() {
+                                      Graphics_Canvas.fillPath(ctx)(function __do() {
+                                          Graphics_Canvas.moveTo(ctx)(centerX)(centerY)();
+                                          return Graphics_Canvas.arc(ctx)({
+                                              start: $$Math.pi / 2.0,
+                                              end: -$$Math.pi / 2.0,
+                                              x: centerX,
+                                              y: centerY,
+                                              radius: 1000.0
+                                          })();
+                                      })();
+                                      Control_Applicative.when(Effect.applicativeEffect)(Data_Eq.eq(Mobius_Game_Surface.eqSurface)(v.value0.mapEnv.value0.character.value0)(Mobius_Game_Surface.Front.value))(Mobius_Game_Common.fillCanvas(ctx))();
+                                      return fillRest();
+                                  };
+                              };
+                              if (v1 instanceof Data_Maybe.Just && v1.value0 instanceof Mobius_Game_Map2D.SingularPoint) {
+                                  var revFrag = Data_Eq.eq(Mobius_Game_Surface.eqSurface)(v.value0.mapEnv.value0.character.value0)(Mobius_Game_Surface.Front.value) && v.value0.mapEnv.value0.character.value2 > j || Data_Eq.eq(Mobius_Game_Surface.eqSurface)(v.value0.mapEnv.value0.character.value0)(Mobius_Game_Surface.Back.value) && v.value0.mapEnv.value0.character.value2 < j;
+                                  var playerRad = $$Math.atan2(Data_Int.toNumber(v.value0.mapEnv.value0.character.value1 - i | 0))(Data_Int.toNumber(v.value0.mapEnv.value0.character.value2 - j | 0));
+                                  var playerOppRad = playerRad - $$Math.pi;
+                                  return function __do() {
+                                      Control_Applicative.when(Effect.applicativeEffect)(revFrag)(Mobius_Game_Common.fillCanvas(ctx))();
+                                      Graphics_Canvas.fillPath(ctx)(function __do() {
+                                          Graphics_Canvas.moveTo(ctx)(centerX)(centerY)();
+                                          return Graphics_Canvas.arc(ctx)({
+                                              start: $$Math.pi / 2.0,
+                                              end: playerOppRad,
+                                              x: centerX,
+                                              y: centerY,
+                                              radius: 1000.0
+                                          })();
+                                      })();
+                                      return fillRest();
+                                  };
+                              };
+                              return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
+                          });
+                      })();
+                      Graphics_Canvas.setGlobalCompositeOperation(ctx)(Graphics_Canvas.SourceAtop.value)();
                       Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(h - 1 | 0))(function (i) {
                           return Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(w - 1 | 0))(function (j) {
                               return function __do() {
                                   Graphics_Canvas.translate(ctx)({
-                                      translateX: Data_Int.toNumber(j) * 32.0,
-                                      translateY: Data_Int.toNumber(i) * 32.0
+                                      translateX: startWidth + Data_Int.toNumber(j) * Mobius_Game_GameSettings.cellSize,
+                                      translateY: startHeight + Data_Int.toNumber(i) * Mobius_Game_GameSettings.cellSize
                                   })();
                                   (function () {
                                       var v1 = Mobius_Game_Map2D.index(v.value0.mapEnv.value0.map2D)(new Mobius_Game_LatticePoint.LatticePoint(Mobius_Game_Surface.Front.value, i, j));
@@ -9941,12 +10394,19 @@ var PS = {};
                                       if (v1 instanceof Data_Maybe.Nothing) {
                                           return Data_Unit.unit;
                                       };
-                                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 88, column 7 - line 90, column 29): " + [ v1.constructor.name ]);
+                                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 151, column 7 - line 153, column 29): " + [ v1.constructor.name ]);
                                   })();
-                                  Mobius_Game_Common.resetTransForm(ctx)();
+                                  return Mobius_Game_Common.resetTransForm(ctx)();
+                              };
+                          });
+                      })();
+                      Graphics_Canvas.setGlobalCompositeOperation(ctx)(Graphics_Canvas.DestinationOver.value)();
+                      Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(h - 1 | 0))(function (i) {
+                          return Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(w - 1 | 0))(function (j) {
+                              return function __do() {
                                   Graphics_Canvas.translate(ctx)({
-                                      translateX: Data_Int.toNumber(j) * 32.0,
-                                      translateY: backStartHeight + Data_Int.toNumber(i) * 32.0
+                                      translateX: startWidth + Data_Int.toNumber(j) * Mobius_Game_GameSettings.cellSize,
+                                      translateY: startHeight + Data_Int.toNumber(i) * Mobius_Game_GameSettings.cellSize
                                   })();
                                   (function () {
                                       var v1 = Mobius_Game_Map2D.index(v.value0.mapEnv.value0.map2D)(new Mobius_Game_LatticePoint.LatticePoint(Mobius_Game_Surface.Back.value, i, j));
@@ -9956,37 +10416,54 @@ var PS = {};
                                       if (v1 instanceof Data_Maybe.Nothing) {
                                           return Data_Unit.unit;
                                       };
-                                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 94, column 7 - line 96, column 29): " + [ v1.constructor.name ]);
+                                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 163, column 7 - line 165, column 29): " + [ v1.constructor.name ]);
                                   })();
                                   return Mobius_Game_Common.resetTransForm(ctx)();
                               };
                           });
                       })();
-                      Graphics_Canvas.strokePath(ctx)(function __do() {
-                          Graphics_Canvas.moveTo(ctx)(0.0)(backStartHeight)();
-                          Graphics_Canvas.lineTo(ctx)(1000.0)(backStartHeight)();
-                          return Graphics_Canvas.closePath(ctx)();
-                      })();
+                      Graphics_Canvas.setGlobalCompositeOperation(ctx)(Graphics_Canvas.SourceOver.value)();
                       (function () {
                           if (v.value0.mapEnv.value0.character.value0 instanceof Mobius_Game_Surface.Front) {
                               Graphics_Canvas.translate(ctx)({
-                                  translateX: Data_Int.toNumber(v.value0.mapEnv.value0.character.value2) * 32.0,
-                                  translateY: Data_Int.toNumber(v.value0.mapEnv.value0.character.value1) * 32.0
+                                  translateX: startWidth + Data_Int.toNumber(v.value0.mapEnv.value0.character.value2) * Mobius_Game_GameSettings.cellSize,
+                                  translateY: startHeight + Data_Int.toNumber(v.value0.mapEnv.value0.character.value1) * Mobius_Game_GameSettings.cellSize
                               })();
                               Mobius_Game_Common.drawImagesFromImages(ctx)(images)("player")();
                               return Mobius_Game_Common.resetTransForm(ctx)();
                           };
                           if (v.value0.mapEnv.value0.character.value0 instanceof Mobius_Game_Surface.Back) {
                               Graphics_Canvas.translate(ctx)({
-                                  translateX: Data_Int.toNumber(v.value0.mapEnv.value0.character.value2) * 32.0,
-                                  translateY: backStartHeight + Data_Int.toNumber(v.value0.mapEnv.value0.character.value1) * 32.0
+                                  translateX: startWidth + Data_Int.toNumber(v.value0.mapEnv.value0.character.value2) * Mobius_Game_GameSettings.cellSize,
+                                  translateY: startHeight + Data_Int.toNumber(v.value0.mapEnv.value0.character.value1) * Mobius_Game_GameSettings.cellSize
                               })();
                               Mobius_Game_Common.drawImagesFromImages(ctx)(images)("player")();
                               return Mobius_Game_Common.resetTransForm(ctx)();
                           };
-                          throw new Error("Failed pattern match at Mobius.Game.MapState (line 102, column 5 - line 110, column 27): " + [ v.value0.mapEnv.value0.character.constructor.name ]);
+                          throw new Error("Failed pattern match at Mobius.Game.MapState (line 170, column 5 - line 184, column 27): " + [ v.value0.mapEnv.value0.character.constructor.name ]);
                       })();
-                      return Data_Unit.unit;
+                      Data_Unit.unit;
+                      Graphics_Canvas.setLineWidth(ctx)(2.0)();
+                      Graphics_Canvas.setFillStyle(ctx)("#161616")();
+                      Graphics_Canvas.setStrokeStyle(ctx)("#161616")();
+                      Graphics_Canvas.setGlobalCompositeOperation(ctx)(Graphics_Canvas.SourceOver.value)();
+                      Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(h - 1 | 0))(function (i) {
+                          return Data_Foldable.for_(Effect.applicativeEffect)(Data_Foldable.foldableArray)(Common.upRange(0)(w - 1 | 0))(function (j) {
+                              var v1 = Mobius_Game_Map2D.indexWithPoint(v.value0.mapEnv.value0.map2D)(new Mobius_Game_LatticePoint.Point(i, j));
+                              if (v1 instanceof Data_Maybe.Just && v1.value0 instanceof Mobius_Game_Map2D.SingularPoint) {
+                                  var dj = (v.value0.mapEnv.value0.character.value2 - j | 0) * 1000 | 0;
+                                  var di = (v.value0.mapEnv.value0.character.value1 - i | 0) * 1000 | 0;
+                                  var centerY = startHeight + (Data_Int.toNumber(i) * Mobius_Game_GameSettings.cellSize + Mobius_Game_GameSettings.cellSize / 2.0);
+                                  var centerX = startWidth + (Data_Int.toNumber(j) * Mobius_Game_GameSettings.cellSize + Mobius_Game_GameSettings.cellSize / 2.0);
+                                  return Graphics_Canvas.strokePath(ctx)(function __do() {
+                                      Graphics_Canvas.moveTo(ctx)(centerX)(centerY)();
+                                      return Graphics_Canvas.lineTo(ctx)(centerX - Data_Int.toNumber(dj))(centerY - Data_Int.toNumber(di))();
+                                  });
+                              };
+                              return Control_Applicative.pure(Effect.applicativeEffect)(Data_Unit.unit);
+                          });
+                      })();
+                      return Mobius_Game_Common.resetTransForm(ctx)();
                   };
               };
           };
@@ -10064,9 +10541,9 @@ var PS = {};
                                   destinations: v.value0.destinations
                               };
                           };
-                          throw new Error("Failed pattern match at Mobius.Game.MapState (line 66, column 15 - line 73, column 50): " + [ v4.constructor.name ]);
+                          throw new Error("Failed pattern match at Mobius.Game.MapState (line 68, column 15 - line 75, column 50): " + [ v4.constructor.name ]);
                       };
-                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 64, column 43 - line 73, column 50): " + [ v3.constructor.name ]);
+                      throw new Error("Failed pattern match at Mobius.Game.MapState (line 66, column 43 - line 75, column 50): " + [ v3.constructor.name ]);
                   };
                   if (v2 instanceof Data_Maybe.Nothing) {
                       return {
@@ -10075,9 +10552,9 @@ var PS = {};
                           destinations: v.value0.destinations
                       };
                   };
-                  throw new Error("Failed pattern match at Mobius.Game.MapState (line 53, column 19 - line 74, column 50): " + [ v2.constructor.name ]);
+                  throw new Error("Failed pattern match at Mobius.Game.MapState (line 55, column 19 - line 76, column 50): " + [ v2.constructor.name ]);
               };
-              throw new Error("Failed pattern match at Mobius.Game.MapState (line 51, column 63 - line 74, column 50): " + [ v1.constructor.name ]);
+              throw new Error("Failed pattern match at Mobius.Game.MapState (line 53, column 63 - line 76, column 50): " + [ v1.constructor.name ]);
           })());
       };
   };
@@ -10113,12 +10590,12 @@ var PS = {};
                       initMap: v.value0.initMap
                   });
               };
-              throw new Error("Failed pattern match at Mobius.Game.MapState (line 36, column 8 - line 38, column 53): " + [ v1.constructor.name ]);
+              throw new Error("Failed pattern match at Mobius.Game.MapState (line 38, column 8 - line 40, column 53): " + [ v1.constructor.name ]);
           };
           if (i instanceof R) {
               return makeMapState(v.value0.initMap);
           };
-          throw new Error("Failed pattern match at Mobius.Game.MapState (line 34, column 57 - line 39, column 28): " + [ i.constructor.name ]);
+          throw new Error("Failed pattern match at Mobius.Game.MapState (line 36, column 57 - line 41, column 28): " + [ i.constructor.name ]);
       };
   };
   exports["MapEnv"] = MapEnv;
@@ -10153,9 +10630,9 @@ var PS = {};
   var b = new Mobius_Game_Map2D["Object"](Mobius_Game_Object.Box.value);
   var a = new Mobius_Game_Map2D["Object"](Mobius_Game_Object.Apple.value);
   var testMapState = new Mobius_Game_MapState.MapEnv({
-      character: new Mobius_Game_LatticePoint.LatticePoint(Mobius_Game_Surface.Front.value, 1, 0),
+      character: new Mobius_Game_LatticePoint.LatticePoint(Mobius_Game_Surface.Front.value, 6, 3),
       destinations: Mobius_Game_Map2D.Map2D.create(Matrix.empty),
-      map2D: Mobius_Game_Map2D.Map2D.create(Data_Maybe.fromMaybe(Matrix.empty)(Matrix.fromArray([ [ makeDoubledCell(w)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(b), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(w), singu, makeDoubledCell(w)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(a)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(w) ] ])))
+      map2D: Mobius_Game_Map2D.Map2D.create(Data_Maybe.fromMaybe(Matrix.empty)(Matrix.fromArray([ [ makeDoubledCell(w)(e), makeDoubledCell(w)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(w)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(b), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(w)(a), singu, makeDoubledCell(a)(w), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(b)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(w) ], [ makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(e), makeDoubledCell(e)(w), makeDoubledCell(e)(w) ] ])))
   });
   exports["testMapState"] = testMapState;
 })(PS);
@@ -10354,7 +10831,7 @@ var PS = {};
                       return Control_Applicative.pure(Halogen_Hooks_HookM.applicativeHookM)(Data_Maybe.Nothing.value);
                   });
               })))(function () {
-                  return Halogen_Hooks_Hook.pure(Halogen_HTML_Elements.div([ Mobius_WebApp_Components_Common.css("flex items-center justify-center h-screen w-screen") ])([ Halogen_HTML_Elements.canvas([ Halogen_HTML_Properties.tabIndex(0), Halogen_HTML_Properties.id("canvas"), Mobius_WebApp_Components_Common.css("object-contain h-full w-full"), Halogen_HTML_Properties.style("image-rendering: pixelated;") ]) ]));
+                  return Halogen_Hooks_Hook.pure(Halogen_HTML_Elements.div([ Mobius_WebApp_Components_Common.css("flex items-center justify-center h-screen w-screen p-3 bg-gameBlack") ])([ Halogen_HTML_Elements.canvas([ Halogen_HTML_Properties.tabIndex(0), Halogen_HTML_Properties.id("canvas"), Mobius_WebApp_Components_Common.css("object-contain h-full w-full outline-none bg-gameBlack"), Halogen_HTML_Properties.style("image-rendering: pixelated;") ]) ]));
               });
           };
       });
