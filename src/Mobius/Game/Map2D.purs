@@ -28,7 +28,7 @@ instance Show a => Show (Cell a) where
 
 instance Drawable a => Drawable (Cell a) where
   draw ctx images = case _ of
-    Empty -> pure unit
+    Empty -> drawImagesFromImages ctx images "empty"
     Object a -> draw ctx images a
 
 data WithSingularPoint a = SingularPoint | NotSingularPoint a

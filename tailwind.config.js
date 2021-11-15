@@ -34,6 +34,9 @@ module.exports = {
       yukiBlack: {
         DEFAULT: '#323232',
       },
+      gameBlack: {
+        DEFAULT: "#161616"
+      },
       white: {
         DEFAULT: '#FFFFFF'
       }

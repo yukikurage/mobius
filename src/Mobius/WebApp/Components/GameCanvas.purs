@@ -7,7 +7,7 @@ import Effect.Class (class MonadEffect, liftEffect)
 import Graphics.Canvas (getCanvasElementById)
 import Halogen (Component)
 import Halogen.HTML (canvas, div)
-import Halogen.HTML.Properties (height, id, style, tabIndex, width)
+import Halogen.HTML.Properties (id, style, tabIndex)
 import Halogen.Hooks as Hooks
 import Mobius.Game.Assets (imageSources)
 import Mobius.Game.Drawable (draw)
@@ -29,6 +29,6 @@ component = Hooks.component \_ _ -> Hooks.do
       Nothing -> pure unit
     pure Nothing
 
-  Hooks.pure $ div [ css "flex items-center justify-center h-screen w-screen" ]
-    [ canvas [ tabIndex 0, id "canvas", css "object-contain h-full w-full", style "image-rendering: pixelated;" ]
+  Hooks.pure $ div [ css "flex items-center justify-center h-screen w-screen p-3 bg-gameBlack" ]
+    [ canvas [ tabIndex 0, id "canvas", css "object-contain h-full w-full outline-none bg-gameBlack", style "image-rendering: pixelated;" ]
     ]

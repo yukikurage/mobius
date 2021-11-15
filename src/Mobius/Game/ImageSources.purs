@@ -10,4 +10,5 @@ imageSources =
   , "box" /\ "./images/cells/box.png"
   , "destination" /\ "./images/cells/destination.png"
   , "player" /\ "./images/cells/player.png"
+  , "empty" /\ "./images/cells/empty.png"
   ]
