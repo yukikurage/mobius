@@ -8,11 +8,13 @@ import Data.Int (toNumber)
 import Data.Maybe (Maybe(..))
 import Data.Traversable (for_)
 import Data.Tuple.Nested ((/\))
-import Graphics.Canvas (TextBaseline(..), closePath, lineTo, moveTo, setFont, setTextBaseline, strokePath, translate)
-import Mobius.Game.Common (drawImagesFromImages, resetTransForm)
+import Graphics.Canvas (Composite(..), TextBaseline(..), arc, closePath, fill, fillPath, lineTo, moveTo, rect, setFillStyle, setFont, setGlobalCompositeOperation, setLineWidth, setTextBaseline, strokePath, translate)
+import Math (atan2, pi)
+import Mobius.Game.Common (clearCanvas, drawImagesFromImages, fillCanvas, resetTransForm)
 import Mobius.Game.Directions (Directions)
 import Mobius.Game.Drawable (class Drawable, draw)
-import Mobius.Game.LatticePoint (LatticePoint(..), computeWithPoint, toPoint)
+import Mobius.Game.GameSettings (cellSize)
+import Mobius.Game.LatticePoint (LatticePoint(..), Point(..), computeWithPoint, toPoint)
 import Mobius.Game.Map2D (Cell(..), Map2D, WithSingularPoint(..), compute, heightMap2D, index, indexWithPoint, moveSingularPoint, updateAt, widthMap2D)
 import Mobius.Game.Object (Object, ObjectProperty(..), objectProperty)
 import Mobius.Game.Surface (Surface(..))
@@ -74,15 +76,69 @@ move (MapEnv { map2D, character, destinations }) d = MapEnv $ case compute map2D
     Nothing -> { map2D, character, destinations } --範囲外ならすすめない
 
 instance Drawable MapState where
-  draw ctx images (MapState { mapEnv: (MapEnv { map2D, character }) }) = do
+  draw ctx images (MapState { mapEnv: (MapEnv { map2D, character: character@(LatticePoint s ci cj) }) }) = do
     let
       h = heightMap2D map2D
       w = widthMap2D map2D
 
-      cellSize = 32.0
       backStartHeight = (toNumber h + 1.0) * cellSize
     setFont ctx "20px serif"
+
+    resetTransForm ctx
+
     setTextBaseline ctx BaselineTop
+
+    -- 上のレイヤーのマスクを作成
+    setFillStyle ctx "#fff"
+    clearCanvas ctx
+    setGlobalCompositeOperation ctx Xor
+    for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
+      let
+        fillRest = do
+          fillPath ctx do
+            rect ctx
+              { x: toNumber j * cellSize
+              , y: toNumber i * cellSize
+              , width: cellSize / 2.0
+              , height: 1000.0
+              }
+      case indexWithPoint map2D (Point i j) of
+        Just SingularPoint | cj == j && ci < i -> do
+          when (s == Front) $ fillCanvas ctx
+          fillRest
+        Just SingularPoint | cj == j && ci > i -> do
+          fillPath ctx $ do
+            moveTo ctx (toNumber j * cellSize + (cellSize / 2.0)) (toNumber i * cellSize + (cellSize / 2.0))
+            arc ctx
+              { start: pi / 2.0
+              , end: -pi / 2.0
+              , x: toNumber j * cellSize + (cellSize / 2.0)
+              , y: toNumber i * cellSize + (cellSize / 2.0)
+              , radius: 1000.0
+              }
+          when (s == Front) $ fillCanvas ctx
+          fillRest
+        Just SingularPoint -> do
+          let
+            playerRad = atan2 (toNumber (ci - i)) (toNumber (cj - j))
+            playerOppRad = playerRad - pi
+            revFrag = s == Front && cj > j || s == Back && cj < j
+          when revFrag do
+            fillCanvas ctx
+          fillPath ctx $ do
+            moveTo ctx (toNumber j * cellSize + (cellSize / 2.0)) (toNumber i * cellSize + (cellSize / 2.0))
+            arc ctx
+              { start: pi / 2.0
+              , end: playerOppRad
+              , x: toNumber j * cellSize + (cellSize / 2.0)
+              , y: toNumber i * cellSize + (cellSize / 2.0)
+              , radius: 1000.0
+              }
+          fillRest
+        _ -> pure unit
+
+    -- 上のレイヤーを描画
+    setGlobalCompositeOperation ctx SourceAtop
     for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
       translate ctx { translateX: toNumber j * cellSize, translateY: toNumber i * cellSize }
       case index map2D (LatticePoint Front i j) of
@@ -90,22 +146,44 @@ instance Drawable MapState where
         Nothing -> pure unit
       resetTransForm ctx
 
-      translate ctx { translateX: toNumber j * cellSize, translateY: backStartHeight + toNumber i * cellSize }
+    -- 下のレイヤーを描画
+    setGlobalCompositeOperation ctx DestinationOver
+    for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
+      translate ctx { translateX: toNumber j * cellSize, translateY: toNumber i * cellSize }
       case index map2D (LatticePoint Back i j) of
         Just x -> draw ctx images x
         Nothing -> pure unit
       resetTransForm ctx
-    strokePath ctx $ do
-      moveTo ctx 0.0 backStartHeight
-      lineTo ctx 1000.0 backStartHeight
-      closePath ctx
+
+    -- キャラクターを描画
+    setGlobalCompositeOperation ctx SourceOver
     case character of
       LatticePoint Front i j -> do
         translate ctx { translateX: toNumber j * cellSize, translateY: toNumber i * cellSize }
         drawImagesFromImages ctx images "player"
         resetTransForm ctx
       LatticePoint Back i j -> do
-        translate ctx { translateX: toNumber j * cellSize, translateY: backStartHeight + toNumber i * cellSize }
+        translate ctx { translateX: toNumber j * cellSize, translateY: toNumber i * cellSize }
         drawImagesFromImages ctx images "player"
         resetTransForm ctx
     pure unit
+
+    --あの線を描画
+    setLineWidth ctx 2.0
+    setFillStyle ctx "#000"
+    setGlobalCompositeOperation ctx SourceOver
+    for_ (upRange 0 (h - 1)) \i -> for_ (upRange 0 (w - 1)) \j -> do
+      case indexWithPoint map2D (Point i j) of
+
+        Just SingularPoint -> do
+          let
+            di = (ci - i) * 1000
+            dj = (cj - j) * 1000
+          strokePath ctx $ do
+            moveTo ctx
+              (toNumber j * cellSize + (cellSize / 2.0))
+              (toNumber i * cellSize + (cellSize / 2.0))
+            lineTo ctx
+              (toNumber j * cellSize + (cellSize / 2.0) - toNumber dj)
+              (toNumber i * cellSize + (cellSize / 2.0) - toNumber di)
+        _ -> pure unit
